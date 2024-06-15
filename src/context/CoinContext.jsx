@@ -25,9 +25,10 @@ const CoinContextProvider = (props) => {
                 throw new Error(`Error: ${response.status}`);
             }
             const data = await response.json();
+            setAllCoin(data)
           }
           catch(err){
-
+            console.log(err);
           }
     }
 
