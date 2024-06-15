@@ -18,11 +18,17 @@ const CoinContextProvider = (props) => {
               'x-cg-demo-api-key': 'CG-6in93khyrxLX4jamXUjuhY1P	'
             }
           };
-          
-          fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.name}`, options)
-            .then(response => response.json())
-            .then(response => setAllCoin(response))
-            .catch(err => console.error(err));
+
+          try{
+            const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency.name}`, options);
+            if(!response.ok){
+                throw new Error(`Error: ${response.status}`);
+            }
+            const data = await response.json();
+          }
+          catch(err){
+
+          }
     }
 
     useEffect(()=> {

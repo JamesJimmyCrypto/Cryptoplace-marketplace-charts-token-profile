@@ -14,14 +14,21 @@ const Coin = () => {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        'x-cg-demo-api-key': 'CG-6in93khyrxLX4jamXUjuhY1P	'
+        'x-cg-demo-api-key': 'CG-6in93khyrxLX4jamXUjuhY1P'
       }
     };
 
-    fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`, options)
-      .then(response => response.json())
-      .then(response => setCoinData(response))
-      .catch(err => console.error(err));
+    try{
+      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`, options);
+      if(!response.ok){
+        throw new Error(`Error: ${response.data}`);
+      }
+      const data = await response.json();
+      setCoinData(data);
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
   const fetchHistoricalData = async () => {
@@ -33,10 +40,17 @@ const Coin = () => {
       }
     };
 
-    fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency.name}&days=10&interval=daily`, options)
-      .then(response => response.json())
-      .then(response => setHistoricalData(response))
-      .catch(err => console.error(err));
+    try{
+      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency.name}&days=10&interval=daily`, options);
+      if(!response.ok){
+        throw new Error(`Error: ${response.status}`);
+      }
+      const data = await response.json();
+      setHistoricalData(data);
+    }
+    catch(err){
+      console.log(err);
+    }
   }
 
   useEffect(() => {
